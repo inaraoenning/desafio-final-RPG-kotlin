@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4337e92c-1f67-45c6-b6c8-e2fc5852fb9a" name="Changes" comment="Ajustar funções override ladino" />
+    <list default="true" id="4337e92c-1f67-45c6-b6c8-e2fc5852fb9a" name="Changes" comment="Add doc balanceamento personagens para inserir no DB">
+      <change beforePath="$PROJECT_DIR$/rpg/rpg/README.MD" beforeDir="false" afterPath="$PROJECT_DIR$/rpg/rpg/README.MD" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -80,12 +82,21 @@
       <option name="project" value="LOCAL" />
       <updated>1779223311419</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Add doc balanceamento personagens para inserir no DB">
+      <option name="closed" value="true" />
+      <created>1779223858623</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1779223858624</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Ajustar funções override ladino" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajustar funções override ladino" />
+    <MESSAGE value="Add doc balanceamento personagens para inserir no DB" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add doc balanceamento personagens para inserir no DB" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
