@@ -9,14 +9,14 @@ import jakarta.persistence.*
 @DiscriminatorColumn(name = "tipo_personagem", discriminatorType = DiscriminatorType.STRING)
 
 class Personagem(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Identificador único
     val id: Long = 0,
     val nome: String,
     var forca: Int,
     var velocidade: Int,
     var vida: Int
 ) {
-    fun usarPoder() {
+    fun usarPoder(adversario: Personagem) {
         println("O herói $nome usou poder!")
     }
 
@@ -25,40 +25,34 @@ class Personagem(
         val danoFinal = danoEspecial ?: this.forca // Se houver dano especial
 
         if (this.velocidade >= adversario.velocidade) {
-            adversario.vida -= danoFinal
-            println("$nome é foi mais rápido e atacou primeiro! causando $danoFinal")
 
-            // Se o adversário for Guerreiro, sofrerDano dele
-            if (adversario is Guerreiro) {
-                adversario.sofrerDano(danoFinal)
-            } else {
-                adversario.vida -= danoFinal
-                println("${adversario.nome} recebeu $danoFinal de dano! ❤️ Restante: ${adversario.vida}")
-            }
-            return // early return
+            println("$nome é foi mais rápido e atacou 🤺 primeiro! causando $danoFinal a ${adversario.vida}")
+            adversario.receberDano(danoFinal)
         }
-
-        println("${adversario.nome} esquivou do ataque!")
-
+        return // early return
     }
 
-    fun defender(adversario: Personagem) {
-        // Calcula se a Velocidade é maior que a Força do adversário
-        if (this.velocidade < adversario.forca) {
-            print(" 💨 Você agiu rápido e esquivou do ataque! 💨 ")
-            return
-        }
+    println("${adversario.nome} esquivou do ataque!")
 
-        val dano = adversario.forca
-        this.vida -= dano
-        println(" -❤ $nome não conseguiu defender e sofreu $dano de dano.")
+}
 
+fun defender(adversario: Personagem) {
+    // Calcula se a Velocidade é maior que a Força do adversário
+    if (this.velocidade < adversario.forca) {
+        print(" 💨 Você agiu rápido e esquivou do ataque! 💨 ")
+        return
     }
 
-    // Dentro de Personagem.kt
-    open fun receberDano(valor: Int) {
-        this.vida -= valor
-        if (this.vida < 0) this.vida = 0 // Garante que a vida não fique negativa
-        println("$nome recebeu $valor de dano! ❤️ Restante: $vida")
-    }
+    val dano = adversario.forca
+    this.vida -= dano
+    println(" -❤ $nome não conseguiu defender e sofreu $dano de dano.")
+
+}
+
+// Dentro de Personagem.kt
+open fun receberDano(valor: Int) {
+    this.vida -= valor
+    if (this.vida < 0) this.vida = 0 // Garante que a vida não fique negativa
+    println("$nome recebeu $valor de dano! ❤️ Restante: $vida")
+}
 }

@@ -19,7 +19,7 @@ class BatalhaService(
     private val restClient: RestClient
 ) {
 
-    // 1. Inicia a batalha no banco
+    // Inicia a batalha no banco
     @Transactional
     fun iniciarNovaBatalha(id1: Long, id2: Long): Batalha {
         val p1 = personagemRepository.findById(id1).get()
@@ -30,7 +30,7 @@ class BatalhaService(
         return batalhaRepository.save(batalha)
     }
 
-    // 2. Processa o Round com Iniciativa Aleatória
+    // Iniciativa Aleatória
     @Transactional
     fun processarRound(batalhaId: Long, acaoP1: String, acaoP2: String): Batalha {
         val batalha = batalhaRepository.findById(batalhaId).orElseThrow { RuntimeException("Batalha não encontrada") }
@@ -72,9 +72,7 @@ class BatalhaService(
                 batalha.adicionarLog("${ativo.nome} usou seu PODER ESPECIAL!")
                 // Polimorfismo: o Kotlin chama o poder específico de cada classe
                 when(ativo) {
-                    is Sacerdote -> ativo.executarPenitencia(alvo)
-                    is Ladino -> ativo.usarPoderAlvo(alvo)
-                    else -> ativo.usarPoder()
+                    ativo.usarPoder()
                 }
             }
             "DEFENDER" -> {

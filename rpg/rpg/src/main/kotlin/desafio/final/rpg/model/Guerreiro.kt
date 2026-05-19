@@ -8,12 +8,13 @@ class Guerreiro(nome: String, forca: Int, velocidade: Int, vida: Int, var defesa
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
     override fun usarPoder() {
-        println("$nome, Ativou postura defensiva!")
+        println("$nome, Ativou postura defensiva! 💢 ")
         // Desconto dano na defesa aplicado no momento do impacto
     }
 
-    // função para aplicar a regra do poder ao sofrer dano
-    fun sofrerDano(valor: Int) {
+    // Quando o ataque chamar "receberDano",
+    // o Guerreiro usa lógica da armadura.
+    override fun receberDano(valor: Int) {
         if (defesa > 0) {
             // Se a defesa for maior que o dano, a defesa absorve tudo
             if (defesa >= valor) {
@@ -30,6 +31,6 @@ class Guerreiro(nome: String, forca: Int, velocidade: Int, vida: Int, var defesa
         }
 
         vida -= valor
-        println("$nome recebeu $valor de dano direto na vida! ❤️ Restante: $vida")
+        println("$nome recebeu $valor de dano direto na vida! -❤️")
     }
 }

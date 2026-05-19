@@ -8,7 +8,7 @@ class Ladino(nome: String, forca: Int, velocidade: Int, vida: Int, var sagacidad
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
     override fun usarPoder() {
-        super.usarPoder()
+        super.usarPoderAlvo()
         println("O Ladino está em modo furtivo!")
     }
 

@@ -7,8 +7,9 @@ import jakarta.persistence.*
 class Sacerdote(nome: String, forca: Int, velocidade: Int, var vidaMaxima: Int, var penitencia: Int) :
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vidaMaxima) {
     //Penitência para curar a si mesmo e causar dano baseado na vida perdida
-    override fun usarPoder() {
+    override fun usarPoder(adversario: Personagem) {
         println("$nome usou 'Penitência'! 🙏 ...")
+        executarPenitencia(adversario)
     }
 
     fun executarPenitencia(adversario: Personagem) {
