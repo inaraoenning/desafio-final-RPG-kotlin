@@ -48,7 +48,7 @@ class ChatController {
         // Retorna uma mensagem de "entrou na sala" para todos os clientes.
         return MensagemChat(
             remetente = mensagem.remetente,
-            conteudo = "${mensagem.remetente}arena! ⚔️",
+            conteudo = "${mensagem.remetente} entrou arena! ⚔️",
             tipo = TipoMensagem.ENTRAR
         )
     }

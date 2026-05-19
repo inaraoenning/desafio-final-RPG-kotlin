@@ -196,6 +196,12 @@
 
 <script>
     // ─────────────────────────────────────────────────────────────────────────────
+    // CONFIGURAÇÃO DO SERVIDOR (BACKEND)
+    // ─────────────────────────────────────────────────────────────────────────────
+    // Como o HTML está fora do Spring Boot, precisamos dizer onde a API está rodando
+    const API_URL = "http://localhost:8080";
+
+    // ─────────────────────────────────────────────────────────────────────────────
     // VARIÁVEIS GLOBAIS
     // ─────────────────────────────────────────────────────────────────────────────
     let stompClient = null;  // referência para o cliente STOMP (WebSocket)
@@ -208,16 +214,12 @@
         username = document.getElementById("username").value.trim();
         if (!username) { alert("Digite seu nome!"); return; }
 
-        // 1. Cria a conexão SockJS apontando para o endpoint que definimos no
-        //    WebSocketConfig.kt (registerStompEndpoints → "/chat-websocket")
-        const socket = new SockJS('/chat-websocket');
+        // AJUSTE 1: Agora passamos a URL completa do servidor para o SockJS
+        const socket = new SockJS(`${API_URL}/chat-websocket`);
 
-        // 2. Cria o cliente STOMP em cima da conexão SockJS
         stompClient = Stomp.over(socket);
-        stompClient.debug = null; // desativa logs de debug no console
+        stompClient.debug = null;
 
-        // 3. Conecta ao servidor. O segundo parâmetro {} são os headers (não precisamos aqui).
-        //    O terceiro parâmetro é a função chamada quando a conexão for bem-sucedida.
         stompClient.connect({}, function (frame) {
             document.getElementById("status").textContent = "✅ Conectado como: " + username;
             document.getElementById("status").className = "conectado";
@@ -225,17 +227,11 @@
             document.getElementById("chat-input").disabled = false;
             document.getElementById("btn-enviar").disabled = false;
 
-            // 4. Assina o canal "/topic/mensagens"
-            //    Toda vez que alguém publicar nesse canal (via @SendTo no ChatController),
-            //    a função abaixo é chamada com a mensagem recebida.
             stompClient.subscribe('/topic/mensagens', function (mensagem) {
-                const dados = JSON.parse(mensagem.body); // desserializa o JSON
+                const dados = JSON.parse(mensagem.body);
                 exibirMensagem(dados);
             });
 
-            // 5. Envia mensagem de "entrar" para o servidor.
-            //    Vai para "/app/chat.entrar" → processado pelo método adicionarUsuario()
-            //    no ChatController.kt, que retorna para "/topic/mensagens".
             stompClient.send("/app/chat.entrar", {}, JSON.stringify({
                 remetente: username,
                 conteudo: "",
@@ -252,8 +248,6 @@
         const texto = input.value.trim();
         if (!texto || !stompClient) return;
 
-        // Envia para "/app/chat.enviar" → processado pelo método enviarMensagem()
-        // no ChatController.kt, que publica em "/topic/mensagens" para todos.
         stompClient.send("/app/chat.enviar", {}, JSON.stringify({
             remetente: username,
             conteudo: texto,
@@ -279,14 +273,14 @@
         }
 
         container.appendChild(div);
-        container.scrollTop = container.scrollHeight; // auto-scroll para o final
+        container.scrollTop = container.scrollHeight;
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
     // REST — BATALHA
-    // Estas funções usam fetch() normal (HTTP) para chamar os endpoints do
-    // BatalhaController.kt. Não são WebSocket — são requisições REST comuns.
     // ─────────────────────────────────────────────────────────────────────────────
+
+    // AJUSTE 2: Adicionado ${API_URL} antes das rotas nos métodos fetch()
 
     // POST /batalha/iniciar
     async function iniciarBatalha() {
@@ -294,7 +288,7 @@
         const id2 = document.getElementById("id-p2").value;
         if (!id1 || !id2) { alert("Preencha os dois IDs!"); return; }
 
-        const res = await fetch('/batalha/iniciar', {
+        const res = await fetch(`${API_URL}/batalha/iniciar`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idPersonagem1: Number(id1), idPersonagem2: Number(id2) })
@@ -303,7 +297,6 @@
         document.getElementById("id-batalha").value = data.id;
         atualizarPlacar(data);
 
-        // Avisa no chat que uma batalha começou
         if (stompClient) {
             stompClient.send("/app/chat.enviar", {}, JSON.stringify({
                 remetente: "🔔 Sistema",
@@ -314,13 +307,13 @@
     }
 
     // POST /batalha/{id}/round
-    async function executarRound() {
+    async function ejecutarRound() {
         const id = document.getElementById("id-batalha").value;
         if (!id) { alert("Informe o ID da batalha!"); return; }
         const acaoP1 = document.getElementById("acao-p1").value;
         const acaoP2 = document.getElementById("acao-p2").value;
 
-        const res = await fetch(`/batalha/${id}/round`, {
+        const res = await fetch(`${API_URL}/batalha/${id}/round`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ acaoPersonagem1: acaoP1, acaoPersonagem2: acaoP2 })
@@ -334,7 +327,7 @@
         const id = document.getElementById("id-batalha").value;
         if (!id) { alert("Informe o ID da batalha!"); return; }
 
-        const res = await fetch(`/batalha/${id}`);
+        const res = await fetch(`${API_URL}/batalha/${id}`);
         const data = await res.json();
         atualizarPlacar(data);
     }
@@ -348,11 +341,8 @@
 
         const p1 = data.personagem1;
         const p2 = data.personagem2;
-
-        // HP máximo estimado em 100 para a barra (ajuste se tiver o valor real)
         const maxHp = 100;
 
-        // Calcula a % da barra — evita passar de 100%
         const pct1 = Math.min(100, Math.max(0, (p1.vida / maxHp) * 100));
         const pct2 = Math.min(100, Math.max(0, (p2.vida / maxHp) * 100));
 
@@ -372,7 +362,6 @@
         if (data.encerrada) {
             html += `<div class="vitoria">🏆 VITÓRIA: ${data.vencedor}!</div>`;
 
-            // Avisa no chat que a batalha terminou
             if (stompClient) {
                 stompClient.send("/app/chat.enviar", {}, JSON.stringify({
                     remetente: "🔔 Sistema",
@@ -384,7 +373,6 @@
 
         el.innerHTML = html;
 
-        // Exibe o log da batalha
         if (data.log || data.logDescritivo) {
             logEl.style.display = "block";
             logEl.textContent = data.log || data.logDescritivo;
