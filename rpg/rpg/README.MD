@@ -41,3 +41,55 @@ Força e velocidade baixas. Muita vida máxima para aguentar apanhar e acumular 
 ```INSERT INTO personagem (tipo_personagem, nome, forca, velocidade, vida, vida_maxima, penitencia) 
 VALUES ('SACERDOTE', 'Padre Marcelo Rossi', 10, 8, 140, 140, 20);
 ```
+
+
+====
+
+Teste Postman
+
+## Teste 1: Simular que o Rival te atacou (/rede/receber-ataque)
+Ver se o seu herói vai receber o dano corretamente (e se a armadura do Guerreiro vai funcionar).
+
+Método POST.
+
+(URL)
+http://localhost:8080/rede/receber-ataque
+
+Body, selecione a opção raw e tipo JSON.
+
+(usar idBatalha para o ID de uma batalha que já tenha criada no banco de dados):
+```
+JSON
+{
+"idBatalha": 1,
+"dano": 15,
+"atacanteNome": "Inimigo Macabro"
+}
+```
+ver uma mensagem dizendo: "Dano recebido. Vida restante: ... ". 
+No console do seu IntelliJ, textos do sistema dizendo se a armadura segurou o dano ou se foi direto para a vida
+
+## Teste 2: Comandar um ataque ao Rival (/rede/atacar)
+teste para fazer a API usar o "estilonge" (RestClient) e disparar um ataque contra o servidor do inimigo.
+
+Método POST
+
+Na URL
+http://localhost:8080/rede/atacar
+
+Body, raw e JSON.
+
+(substuir a urlRival pelo endereço IP/porta do pc rival):
+
+```
+JSON
+{
+"idBatalha": 1,
+"dano": 25,
+"atacanteNome": "SeuHeroiSuperForte",
+"urlRival": "http://localhost:8081"
+}
+```
+
+Na resposta do Postman, ver o texto "Tentativa de ataque enviada ao rival.". 
+se o servidor do rival estiver ligado no endereço, console do IntelliJ printa: "Ataque enviado ao rival com sucesso!".
