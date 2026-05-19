@@ -7,8 +7,8 @@ import jakarta.persistence.*
 class Ladino(nome: String, forca: Int, velocidade: Int, vida: Int, var sagacidade: Int) :
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
-    override fun usarPoder() {
-        super.usarPoderAlvo()
+    override fun usarPoder(adversario:Personagem) {
+        usarPoderAlvo(adversario)
         println("O Ladino está em modo furtivo!")
     }
 

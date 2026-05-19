@@ -71,9 +71,8 @@ class BatalhaService(
             "PODER" -> {
                 batalha.adicionarLog("${ativo.nome} usou seu PODER ESPECIAL!")
                 // Polimorfismo: o Kotlin chama o poder específico de cada classe
-                when(ativo) {
-                    ativo.usarPoder()
-                }
+                ativo.usarPoder(alvo)
+
             }
             "DEFENDER" -> {
                 batalha.adicionarLog("${ativo.nome} preparou defesa!")
@@ -126,7 +125,7 @@ class BatalhaService(
         if (batalha.encerrada) return "A batalha já está encerrada"
 
         // Aplica o dano no nosso personagem (personagem1 é o nosso)
-        batalha.personagem1.vida -= dano
+        batalha.personagem1.receberDano(dano)
         batalha.adicionarLog("${batalha.personagem1.nome} recebeu $dano de dano do $atacanteNome (Rival)!")
 
         verificarFimDeJogo(batalha)
