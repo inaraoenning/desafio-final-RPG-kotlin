@@ -7,9 +7,10 @@ import jakarta.persistence.*
 class Mago(nome: String, forca: Int, velocidade: Int, vida: Int, var magia: Int) :
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
-    override fun usarPoder() {
+    override fun usarPoder(adversario: Personagem) {
         this.vida += magia
         this.forca += magia
         println("$nome usou Magia aumentando Força e Vida em $magia!")
+
     }
 }

@@ -29,30 +29,31 @@ class Personagem(
             println("$nome é foi mais rápido e atacou 🤺 primeiro! causando $danoFinal a ${adversario.vida}")
             adversario.receberDano(danoFinal)
         }
+        
+        println("${adversario.nome} esquivou do ataque!")
         return // early return
     }
 
-    println("${adversario.nome} esquivou do ataque!")
 
-}
+    fun defender(adversario: Personagem) {
+        // Calcula se a Velocidade é maior que a Força do adversário
+        if (this.velocidade < adversario.forca) {
+            print(" 💨 Você agiu rápido e esquivou do ataque! 💨 ")
+            return
+        }
 
-fun defender(adversario: Personagem) {
-    // Calcula se a Velocidade é maior que a Força do adversário
-    if (this.velocidade < adversario.forca) {
-        print(" 💨 Você agiu rápido e esquivou do ataque! 💨 ")
-        return
+        val dano = adversario.forca
+        this.vida -= dano
+        println(" -❤ $nome não conseguiu defender e sofreu $dano de dano.")
+
     }
 
-    val dano = adversario.forca
-    this.vida -= dano
-    println(" -❤ $nome não conseguiu defender e sofreu $dano de dano.")
+    // Dentro de Personagem.kt
+    open fun receberDano(valor: Int) {
+        this.vida -= valor
+        if (this.vida < 0) this.vida = 0 // Garante que a vida não fique negativa
+        println("$nome recebeu $valor de dano! ❤️ Restante: $vida")
+    }
 
-}
 
-// Dentro de Personagem.kt
-open fun receberDano(valor: Int) {
-    this.vida -= valor
-    if (this.vida < 0) this.vida = 0 // Garante que a vida não fique negativa
-    println("$nome recebeu $valor de dano! ❤️ Restante: $vida")
-}
 }
