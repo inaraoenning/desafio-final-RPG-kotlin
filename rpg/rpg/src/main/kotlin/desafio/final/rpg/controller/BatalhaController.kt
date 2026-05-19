@@ -18,12 +18,12 @@ class BatalhaController (
     // ENDPOINT 1 - POST /batalha/iniciar
     // Responsabilidade: criar uma nova batalha no banco entre dois personagens.
     // o campo JSON deve conter: {"idPersonagem": 1, "idPersonagem2": 2)
-    @PostMapping("/inicar")
+    @PostMapping("/iniciar")
     fun iniciarBatalha(@RequestBody payload: Map<String, Long>): ResponseEntity<Batalha>{
         // Extrai os IDs do corpo da requisição
         // O operador ?: lança exceção com mensagem se o campo não existir no JSON
         val id1 = payload["idPersonagem1"] ?: throw IllegalStateException("IdPersonagem1 é obrigatorio")
-        val id2 = payload["idPersonagem2"] ?: throw IllegalStateException("IdPersonagem1 é obrigatorio")
+        val id2 = payload["idPersonagem2"] ?: throw IllegalStateException("IdPersonagem2 é obrigatorio")
 
         // Delega a criação ao Service (que contém as regras de negocio)
         // O Controller so orquesta - nunca tem lógica de jogo direto nele.
@@ -45,7 +45,7 @@ class BatalhaController (
 
         val resposta = mapOf(
             "id" to batalha.id,
-            "encerra" to batalha.encerrada,
+            "encerrada" to batalha.encerrada,
             "vencedor" to (batalha.nomeVencedor ?: "Em andamento"),
             "personagem1" to mapOf(
                 "nome" to batalha.personagem1.nome,
@@ -73,4 +73,11 @@ class BatalhaController (
 
     // ENDPoINT 4 - POST /batalha/{id}/round
     // Responsabilide: executar um turno de combate na batalha especificada.
+    @PostMapping("/{id}/round")
+    fun executarRound(@PathVariable id: Long, @RequestBody payload: Map<String, String>): ResponseEntity<Batalha> {
+        val acao1 = payload["acaoPersonagem1"] ?: throw IllegalStateException("acaoPersonagem1 é obrigatorio")
+        val acao2 = payload["acaoPersonagem2"] ?: throw IllegalStateException("acaoPersonagem2 é obrigatorio")
+        val batalha = batalhaService.processarRound(id, acao1, acao2)
+        return ResponseEntity.ok(batalha)
+    }
 }
