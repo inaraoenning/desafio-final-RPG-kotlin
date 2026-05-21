@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/rede")
-@CrossOrigin(origins = ["*"])
 class BatalhaRedeController(private val batalhaService: BatalhaService) {
 
     // --- NOVOS ENDPOINTS HOST-CLIENT ---
