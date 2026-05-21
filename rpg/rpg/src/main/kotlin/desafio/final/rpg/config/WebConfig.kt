@@ -9,8 +9,7 @@ class WebConfig : WebMvcConfigurer {
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**") // Aplica para todas as rotas (batalha, personagem, etc)
             .allowedOriginPatterns("*") // Permite acesso de qualquer lugar (ex: seu arquivo HTML local)
-            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+            .allowedMethods("*")
             .allowedHeaders("*")
-            .allowCredentials(true)
     }
 }
