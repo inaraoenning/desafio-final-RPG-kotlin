@@ -1,31 +1,37 @@
 package desafio.final.rpg.controller
 
 import desafio.final.rpg.service.BatalhaService
+import desafio.final.rpg.model.AcaoRedeDTO
+import desafio.final.rpg.model.ResultadoRoundDTO
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/rede")
 class BatalhaRedeController(private val batalhaService: BatalhaService) {
 
-    // Recebe o ataque do computador rival
-    @PostMapping("/receber-ataque")
-    fun receberAtaque(@RequestBody payload: Map<String, Any>): String {
-        val idBatalha = (payload["idBatalha"] as? Number)?.toLong() ?: return "Erro: idBatalha inválido"
-        val dano = (payload["dano"] as? Number)?.toInt() ?: return "Erro: dano inválido"
-        val atacanteNome = payload["atacanteNome"] as? String ?: return "Erro: atacanteNome inválido"
+    // --- NOVOS ENDPOINTS HOST-CLIENT ---
 
-        return batalhaService.processarAtaqueRecebido(idBatalha, dano, atacanteNome)
+    // 1. Cliente envia sua ação para o Host
+    @PostMapping("/enviar-acao")
+    fun enviarAcaoClienteParaHost(@RequestBody dto: AcaoRedeDTO): String {
+        return batalhaService.registrarAcaoRival(dto.idBatalha, dto.acao)
     }
 
-    // Endpoint para você disparar um ataque ao rival via Postman
-    @PostMapping("/atacar")
-    fun atacarRival(@RequestBody payload: Map<String, Any>): String {
+    // 2. Host executa a sua ação e roda o round inteiro
+    @PostMapping("/executar-acao-host")
+    fun executarAcaoHost(@RequestBody payload: Map<String, Any>): Any {
         val idBatalha = (payload["idBatalha"] as? Number)?.toLong() ?: return "Erro: idBatalha inválido"
-        val dano = (payload["dano"] as? Number)?.toInt() ?: return "Erro: dano inválido"
-        val atacanteNome = payload["atacanteNome"] as? String ?: return "Erro: atacanteNome inválido"
-        val urlRival = payload["urlRival"] as? String // opcional
+        val acaoHost = payload["acao"] as? String ?: return "Erro: acao inválida"
+        val urlCliente = payload["urlCliente"] as? String
 
-        batalhaService.enviarAtaqueParaRival(idBatalha, dano, atacanteNome, urlRival)
-        return "Tentativa de ataque enviada ao rival."
+        return batalhaService.processarRoundHost(idBatalha, acaoHost, urlCliente)
     }
+
+    // 3. Cliente recebe o resultado pronto do Host
+    @PostMapping("/sincronizar-resultado")
+    fun receberResultadoSincronizado(@RequestBody dto: ResultadoRoundDTO): String {
+        return batalhaService.aplicarResultadoSincronizado(dto)
+    }
+
+
 }

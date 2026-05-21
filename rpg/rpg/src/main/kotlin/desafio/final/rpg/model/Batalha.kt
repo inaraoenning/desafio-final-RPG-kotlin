@@ -10,6 +10,8 @@ class Batalha(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
 
+    var acaoPendenteRival: String? = null,
+
     // Relacionamento com a tabela de Personagem
     @ManyToOne
     @JoinColumn(name = "personagem1_id", nullable = false)

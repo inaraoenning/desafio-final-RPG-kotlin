@@ -4,6 +4,8 @@ import desafio.final.rpg.model.Batalha
 import desafio.final.rpg.model.Ladino
 import desafio.final.rpg.model.Personagem
 import desafio.final.rpg.model.Sacerdote
+import desafio.final.rpg.model.AcaoRedeDTO
+import desafio.final.rpg.model.ResultadoRoundDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import desafio.final.rpg.repository.BatalhaRepository
@@ -96,43 +98,80 @@ class BatalhaService(
     @Value("\${rival.url}")
     private lateinit var defaultUrlRival: String
 
-    // Envia o ataque para o servidor do rival via HTTP POST
-    fun enviarAtaqueParaRival(idBatalha: Long, dano: Int, atacanteNome: String, customUrl: String? = null) {
-        val payload = mapOf(
-            "idBatalha" to idBatalha,
-            "dano" to dano,
-            "atacanteNome" to atacanteNome
-        )
-        val urlFinal = customUrl ?: defaultUrlRival
-        try {
-            restClient.post()
-                .uri("$urlFinal/rede/receber-ataque")
-                .body(payload)
-                .retrieve()
-                .body(String::class.java)
-            println("Ataque enviado ao rival ($urlFinal) com sucesso!")
-        } catch (e: Exception) {
-            println("Erro ao enviar ataque ao rival: ${e.message}")
-        }
-    }
 
-    // Processa a mensagem de ataque recebida do rival
+
+    // --- NOVA LÓGICA HOST-CLIENT ---
+
     @Transactional
-    fun processarAtaqueRecebido(idBatalha: Long, dano: Int, atacanteNome: String): String {
+    fun registrarAcaoRival(idBatalha: Long, acao: String): String {
         val batalha = batalhaRepository.findById(idBatalha).orElse(null)
             ?: return "Batalha não encontrada"
 
         if (batalha.encerrada) return "A batalha já está encerrada"
 
-        // Aplica o dano no nosso personagem (personagem1 é o nosso)
-        batalha.personagem1.receberDano(dano)
-        batalha.adicionarLog("${batalha.personagem1.nome} recebeu $dano de dano do $atacanteNome (Rival)!")
+        batalha.acaoPendenteRival = acao
+        batalhaRepository.save(batalha)
+        return "Ação do rival registrada. Aguardando ação do host."
+    }
 
-        verificarFimDeJogo(batalha)
+    @Transactional
+    fun processarRoundHost(idBatalha: Long, acaoHost: String, urlCliente: String? = null): Any {
+        val batalha = batalhaRepository.findById(idBatalha).orElseThrow { RuntimeException("Batalha não encontrada") }
 
-        personagemRepository.save(batalha.personagem1)
+        val acaoRival = batalha.acaoPendenteRival
+        if (acaoRival == null) {
+            return "Aguardando jogador rival enviar a ação dele."
+        }
+
+        // Processa o round com as duas ações
+        val batalhaAtualizada = processarRound(idBatalha, acaoHost, acaoRival)
+        
+        // Limpa a ação pendente para o próximo turno
+        batalhaAtualizada.acaoPendenteRival = null
+        batalhaRepository.save(batalhaAtualizada)
+
+        // Envia o resultado para o cliente
+        val urlFinal = urlCliente ?: defaultUrlRival
+        val resultadoDTO = ResultadoRoundDTO(
+            idBatalha = idBatalha,
+            vidaP1 = batalhaAtualizada.personagem1.vida, // Vida do Host
+            vidaP2 = batalhaAtualizada.personagem2.vida, // Vida do Cliente (rival para o host)
+            logRound = batalhaAtualizada.logDescritivo,
+            encerrada = batalhaAtualizada.encerrada,
+            vencedor = batalhaAtualizada.nomeVencedor
+        )
+
+        try {
+            restClient.post()
+                .uri("$urlFinal/rede/sincronizar-resultado")
+                .body(resultadoDTO)
+                .retrieve()
+                .body(String::class.java)
+            println("Resultado sincronizado com o cliente ($urlFinal) com sucesso!")
+        } catch (e: Exception) {
+            println("Erro ao sincronizar com cliente: ${e.message}")
+        }
+
+        return batalhaAtualizada
+    }
+
+    @Transactional
+    fun aplicarResultadoSincronizado(resultado: ResultadoRoundDTO): String {
+        val batalha = batalhaRepository.findById(resultado.idBatalha).orElse(null)
+            ?: return "Batalha não encontrada"
+
+        // Para o cliente, o P1 é ele mesmo (que para o Host era o P2), e o P2 é o Host (que para o Host era o P1).
+        // Assim, a vidaP1 do DTO refere-se ao Host, e a vidaP2 refere-se ao Cliente.
+        batalha.personagem2.vida = resultado.vidaP1 // P2 do cliente = Host
+        batalha.personagem1.vida = resultado.vidaP2 // P1 do cliente = Cliente
+
+        batalha.logDescritivo = resultado.logRound
+        batalha.encerrada = resultado.encerrada
+        batalha.nomeVencedor = resultado.vencedor
+
+        personagemRepository.saveAll(listOf(batalha.personagem1, batalha.personagem2))
         batalhaRepository.save(batalha)
 
-        return "Dano recebido. Vida restante: ${batalha.personagem1.vida}"
+        return "Resultado do round sincronizado com sucesso!"
     }
 }
