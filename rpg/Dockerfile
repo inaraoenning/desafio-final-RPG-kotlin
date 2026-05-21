@@ -5,6 +5,8 @@ WORKDIR /app
 # Copia os arquivos do Maven para fazer o download das dependências primeiro (cache)
 COPY rpg/.mvn/ .mvn
 COPY rpg/mvnw rpg/pom.xml ./
+RUN chmod +x mvnw
+
 # Baixa as dependências offline para otimizar builds futuros
 RUN ./mvnw dependency:go-offline
 
