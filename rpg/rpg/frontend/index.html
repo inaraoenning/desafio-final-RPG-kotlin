@@ -282,7 +282,7 @@
       <!-- ── BATALHA ── -->
       <div class="card">
         <div>Personagens disponiveis:</div>
-        <div id="lista-personagens"></div>
+        <ul id="lista-personagens"></ul>
 
         <h2>🗡️ Batalha</h2>
         <div class="batalha-form">
@@ -544,7 +544,7 @@
         lista.innerHTML = '';
         personagens.forEach((personagem) => {
           const li = document.createElement('li');
-          li.textContent = `${personagem.nome} (${personagem.classe})`;
+          li.innerHTML = `<strong>ID ${personagem.id}:</strong> ${personagem.nome} <em>(${personagem.tipo_personagem || 'Lutador'})</em>`;
           lista.appendChild(li);
         });
       }
@@ -671,6 +671,9 @@
           logEl.scrollTop = logEl.scrollHeight;
         }
       }
+
+      // Carrega os personagens assim que a página abrir
+      listarPersonagens();
     </script>
   </body>
 </html>
