@@ -25,5 +25,5 @@ COPY --from=build /app/target/*.jar app.jar
 # Expõe a porta 8080
 EXPOSE 8080
 
-# Comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Comando para iniciar a aplicação com limite de memória (Render Free tem 512MB de RAM)
+ENTRYPOINT ["java", "-Xmx300m", "-jar", "app.jar"]
