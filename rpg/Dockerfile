@@ -3,13 +3,13 @@ FROM eclipse-temurin:17-jdk-jammy AS build
 WORKDIR /app
 
 # Copia os arquivos do Maven para fazer o download das dependências primeiro (cache)
-COPY .mvn/ .mvn
-COPY mvnw pom.xml ./
+COPY rpg/.mvn/ .mvn
+COPY rpg/mvnw rpg/pom.xml ./
 # Baixa as dependências offline para otimizar builds futuros
 RUN ./mvnw dependency:go-offline
 
 # Copia o código fonte e faz o build
-COPY src ./src
+COPY rpg/src ./src
 RUN ./mvnw package -DskipTests
 
 # Estágio 2: Imagem final apenas com o JRE para ser mais leve
