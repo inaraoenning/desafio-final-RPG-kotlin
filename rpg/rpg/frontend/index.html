@@ -129,6 +129,13 @@
             border-radius: 6px;
             margin-top: 8px;
         }
+
+        /* ── REDE ── */
+        .rede-modos { display: flex; gap: 10px; margin-bottom: 12px; }
+        .modo-btn { flex: 1; background: #0f3460; border: 1px solid #e94560; color: #eee; }
+        .modo-btn.ativo { background: #e94560; color: white; }
+        .bloco-rede { display: none; background: #0d1b2a; padding: 12px; border-radius: 6px; margin-top: 10px; border: 1px dashed #e94560; }
+        .bloco-rede.ativo { display: flex; flex-direction: column; gap: 8px; }
     </style>
 </head>
 <body>
@@ -186,6 +193,44 @@
             <button onclick="consultarBatalha()" style="background:#0f3460; border:1px solid #e94560">
                 🔍 Consultar Estado
             </button>
+        </div>
+
+        <hr style="border-color: #0f3460; margin: 15px 0;">
+        <h2>🌐 Batalha em Rede (2 PCs)</h2>
+        <div class="rede-modos">
+            <button id="btn-modo-cliente" class="modo-btn ativo" onclick="selecionarModo('cliente')">Eu sou CLIENTE</button>
+            <button id="btn-modo-host" class="modo-btn" onclick="selecionarModo('host')">Eu sou HOST</button>
+        </div>
+
+        <div id="bloco-cliente" class="bloco-rede ativo">
+            <label>Aguardar o Host criar e rodar a Batalha</label>
+            <div class="row">
+                <input type="number" id="id-batalha-rede-c" placeholder="ID Batalha" />
+                <select id="acao-rede-c">
+                    <option value="ATACAR">Atacar</option>
+                    <option value="DEFENDER">Defender</option>
+                    <option value="PODER">Poder</option>
+                </select>
+                <button onclick="enviarAcaoCliente()">Enviar Ação</button>
+            </div>
+            <span style="font-size:12px; color:#aaa;">(Após enviar, o Host precisa rodar o turno no PC dele)</span>
+        </div>
+
+        <div id="bloco-host" class="bloco-rede">
+            <label>Você calcula o Round e manda pro Cliente!</label>
+            <div class="row">
+                <input type="number" id="id-batalha-rede-h" placeholder="ID Batalha" />
+                <select id="acao-rede-h">
+                    <option value="ATACAR">Atacar</option>
+                    <option value="DEFENDER">Defender</option>
+                    <option value="PODER">Poder</option>
+                </select>
+            </div>
+            <div class="row">
+                <input type="text" id="url-cliente" placeholder="http://192.168.0.20:8080" />
+                <button onclick="executarAcaoHost()">Executar Turno!</button>
+            </div>
+            <span style="font-size:12px; color:#aaa;">(Certifique-se de que o Cliente já enviou a ação dele antes)</span>
         </div>
 
         <div id="batalha-resultado">Nenhuma batalha iniciada ainda.</div>
@@ -330,6 +375,68 @@
         const res = await fetch(`${API_URL}/batalha/${id}`);
         const data = await res.json();
         atualizarPlacar(data);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────────
+    // REST — BATALHA EM REDE (HOST-CLIENT)
+    // ─────────────────────────────────────────────────────────────────────────────
+
+    function selecionarModo(modo) {
+        document.getElementById('btn-modo-cliente').classList.remove('ativo');
+        document.getElementById('btn-modo-host').classList.remove('ativo');
+        document.getElementById('bloco-cliente').classList.remove('ativo');
+        document.getElementById('bloco-host').classList.remove('ativo');
+
+        document.getElementById(`btn-modo-${modo}`).classList.add('ativo');
+        document.getElementById(`bloco-${modo}`).classList.add('ativo');
+    }
+
+    async function enviarAcaoCliente() {
+        const id = document.getElementById("id-batalha-rede-c").value;
+        const acao = document.getElementById("acao-rede-c").value;
+        if (!id) { alert("Informe o ID da batalha!"); return; }
+
+        try {
+            const res = await fetch(`${API_URL}/rede/enviar-acao`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idBatalha: Number(id), acao: acao })
+            });
+            const text = await res.text();
+            alert("Ação enviada: " + text);
+        } catch (e) {
+            alert("Erro ao enviar ação: " + e.message);
+        }
+    }
+
+    async function executarAcaoHost() {
+        const id = document.getElementById("id-batalha-rede-h").value;
+        const acao = document.getElementById("acao-rede-h").value;
+        const urlCliente = document.getElementById("url-cliente").value;
+
+        if (!id) { alert("Informe o ID da batalha!"); return; }
+        if (!urlCliente) { alert("Informe a URL do Cliente (ex: http://192.168.0.20:8080)!"); return; }
+
+        try {
+            const res = await fetch(`${API_URL}/rede/executar-acao-host`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idBatalha: Number(id), acao: acao, urlCliente: urlCliente })
+            });
+
+            const textOrJson = await res.text();
+            try {
+                // Tenta parsear como JSON (se retornar a BatalhaAtualizada)
+                const data = JSON.parse(textOrJson);
+                atualizarPlacar(data);
+                alert("Turno processado e enviado ao cliente!");
+            } catch (e) {
+                // Cai aqui se retornar apenas uma String (ex: "Aguardando jogador rival")
+                alert(textOrJson);
+            }
+        } catch (e) {
+            alert("Erro ao executar ação host: " + e.message);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────────
