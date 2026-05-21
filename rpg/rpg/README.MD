@@ -97,3 +97,37 @@ JSON
 
 Na resposta do Postman, ver o texto "Tentativa de ataque enviada ao rival.". 
 se o servidor do rival estiver ligado no endereço, console do IntelliJ printa: "Ataque enviado ao rival com sucesso!".
+
+
+# Iniciar Batalha
+## Iniciar a Batalha no PC do Host (O "Dono da Sala")
+O jogador o Host abre o jogo/Postman e chama o endpoint de iniciar batalha.
+- Regra: O *idPersonagem1* é sempre o personagem de quem está no *PC atual*.
+
+POST http://localhost:8080/batalha/iniciar (Rodando no PC Host)
+Body:
+```
+{
+"idPersonagem1": 1,
+"idPersonagem2": 2  
+}
+```
+#### (O banco de dados do Host cria a Batalha ID 1. O Host é o P1 e o Cliente é o P2).
+
+## Iniciar a Batalha no PC do Cliente
+O jogador Cliente precisa "entrar na sala", criar a mesma batalha no PC dele.
+- Regra: Como o *idPersonagem1* é sempre o *"dono do PC"* Cliente *inverte* a ordem na hora de criar!
+
+POST http://localhost:8080/batalha/iniciar (Rodando no PC Cliente)
+Body:
+```
+{
+"idPersonagem1": 2,
+"idPersonagem2": 1  
+}
+```
+(O banco de dados do Cliente também cria a Batalha ID 1. Mas aqui, o Cliente é o P1 e o Host é o P2).
+
+- A Batalha iniciada.
+- O Cliente ataca chamando /rede/enviar-acao e fica esperando.
+- O Host ataca chamando /rede/executar-acao-host.
