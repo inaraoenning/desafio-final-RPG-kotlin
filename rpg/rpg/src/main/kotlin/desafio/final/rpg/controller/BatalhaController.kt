@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 // @RequesMapping("/batala"): todos os endpoints desta classe começam com /batalha
 @RestController
 @RequestMapping("/batalha")
+@CrossOrigin(origins = ["*"])
 class BatalhaController (
     // injeção de dependência: o Sping fornece as instãncias automaticamente.
     private val batalhaService: BatalhaService,
