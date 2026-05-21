@@ -38,7 +38,7 @@ class WebScoketConfig : WebSocketMessageBrokerConfigurer {
         // WebSocket quando disponível, e cai para HTTP long-polling como fallback
         // garantido que funcione em todos os navegadores.
 
-        registry.addEndpoint("chat-websocket")
+        registry.addEndpoint("/chat-websocket")
             .setAllowedOriginPatterns("*")
             .withSockJS()
 
