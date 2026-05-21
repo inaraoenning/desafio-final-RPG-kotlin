@@ -1,14 +1,25 @@
 package desafio.final.rpg.model
 
 import jakarta.persistence.*
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import com.fasterxml.jackson.annotation.JsonSubTypes
 
 @Entity
 @Table(name = "personagem")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-// Cria uma coluna no banco para dizer o tipo do personagem.
 @DiscriminatorColumn(name = "tipo_personagem", discriminatorType = DiscriminatorType.STRING)
-
-class Personagem(
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "tipo_personagem"
+)
+@JsonSubTypes(
+    JsonSubTypes.Type(value = Guerreiro::class, name = "GUERREIRO"),
+    JsonSubTypes.Type(value = Ladino::class, name = "LADINO"),
+    JsonSubTypes.Type(value = Mago::class, name = "MAGO"),
+    JsonSubTypes.Type(value = Sacerdote::class, name = "SACERDOTE")
+)
+abstract class Personagem(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Identificador único
     val id: Long = 0,
     val nome: String,
