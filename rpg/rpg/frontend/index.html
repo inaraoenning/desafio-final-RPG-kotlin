@@ -61,6 +61,34 @@
         border: 1px solid #0f3460;
       }
 
+      .personagem {
+        margin-top: 10px;
+        font-size: 12px;
+        color: #aaa;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .personagem ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 0px;
+        margin: 0px;
+      }
+
+      .personagem ul li {
+        background: #16213e;
+        padding: 5px;
+        border: 1px solid #0f3460;
+        margin: 5px;
+        font-size: 12px;
+        color: #aaa;
+        text-decoration: none;
+        list-style-type: none;
+      }
+
       /* ── CONEXÃO ── */
       #login-area {
         grid-column: 1 / -1;
@@ -277,89 +305,126 @@
           />
           <button id="btn-enviar" onclick="enviarMensagem()" disabled>Enviar</button>
         </div>
+
+        <div class="personagem">Personagens disponiveis:</div>
+        <ul id="lista-personagens"></ul>
       </div>
 
       <!-- ── BATALHA ── -->
       <div class="card">
-        <div>Personagens disponiveis:</div>
-        <ul id="lista-personagens"></ul>
+        <h2>⚔️ Como Jogar (Regras da Arena)</h2>
+        <div
+          style="
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #ddd;
+          "
+        >
+          <p style="margin-bottom: 8px">
+            <strong>1.</strong> Decidam no chat quem será o <strong>HOST</strong> (Cria a sala) e
+            quem será o <strong>CLIENTE</strong>.
+          </p>
+          <p style="margin-bottom: 8px">
+            <strong>2.</strong> O HOST deve olhar os IDs disponíveis e criar a batalha no
+            <strong>Passo 1</strong> abaixo. O ID gerado aparecerá no chat.
+          </p>
+          <p style="margin-bottom: 8px">
+            <strong>3.</strong> O CLIENTE vai para o <strong>Passo 2</strong>, coloca o ID da
+            batalha, escolhe sua ação (Atacar/Defender/Poder) e clica em "Enviar Ação". O Host não
+            saberá o que o cliente escolheu.
+          </p>
+          <p>
+            <strong>4.</strong> O HOST vai para o <strong>Passo 2</strong>, escolhe a sua ação e
+            clica em "Executar Turno". Os dados rolam, os atributos são calculados e o resultado
+            aparece para os dois!
+          </p>
+        </div>
 
-        <h2>🗡️ Batalha</h2>
+        <h2>🛠️ Passo 1: O Host Cria a Batalha</h2>
         <div class="batalha-form">
-          <label>Iniciar batalha entre dois personagens (IDs do banco):</label>
+          <label>Digite os IDs dos personagens (veja a lista acima):</label>
           <div class="row">
-            <input type="number" id="id-p1" placeholder="ID Personagem 1" />
-            <input type="number" id="id-p2" placeholder="ID Personagem 2" />
-            <button onclick="iniciarBatalha()">Iniciar</button>
+            <input type="number" id="id-p1" placeholder="Seu ID (Host)" />
+            <input type="number" id="id-p2" placeholder="ID Rival (Cliente)" />
+            <button onclick="iniciarBatalha()" style="background: #e94560">Iniciar Batalha!</button>
           </div>
 
+          <!-- Funcionalidades da batalha local (em um PC só) comentadas: 
           <label>Executar round (ID da batalha + ações):</label>
           <div class="row">
             <input type="number" id="id-batalha" placeholder="ID Batalha" />
-            <select id="acao-p1">
-              <option value="ATACAR">P1: Atacar</option>
-              <option value="DEFENDER">P1: Defender</option>
-              <option value="PODER">P1: Poder</option>
-            </select>
-            <select id="acao-p2">
-              <option value="ATACAR">P2: Atacar</option>
-              <option value="DEFENDER">P2: Defender</option>
-              <option value="PODER">P2: Poder</option>
-            </select>
+            <select id="acao-p1"><option value="ATACAR">P1: Atacar</option><option value="DEFENDER">P1: Defender</option><option value="PODER">P1: Poder</option></select>
+            <select id="acao-p2"><option value="ATACAR">P2: Atacar</option><option value="DEFENDER">P2: Defender</option><option value="PODER">P2: Poder</option></select>
             <button onclick="executarRound()">Round!</button>
           </div>
+          -->
 
           <button
             onclick="consultarBatalha()"
-            style="background: #0f3460; border: 1px solid #e94560"
+            style="background: #0f3460; border: 1px solid #e94560; margin-top: 10px"
           >
-            🔍 Consultar Estado
+            🔍 Atualizar Tela da Batalha (Sincronizar)
           </button>
         </div>
 
         <hr style="border-color: #0f3460; margin: 15px 0" />
-        <h2>🌐 Batalha em Rede (2 PCs)</h2>
+        <h2>🌐 Passo 2: Rodadas da Batalha em Rede</h2>
         <div class="rede-modos">
           <button id="btn-modo-cliente" class="modo-btn ativo" onclick="selecionarModo('cliente')">
-            Eu sou CLIENTE
+            🙋‍♂️ Eu sou o CLIENTE
           </button>
           <button id="btn-modo-host" class="modo-btn" onclick="selecionarModo('host')">
-            Eu sou HOST
+            👑 Eu sou o HOST
           </button>
         </div>
 
         <div id="bloco-cliente" class="bloco-rede ativo">
-          <label>Aguardar o Host criar e rodar a Batalha</label>
+          <label style="color: #e94560; font-weight: bold"
+            >(1º) Você joga a sua Ação em segredo primeiro!</label
+          >
           <div class="row">
-            <input type="number" id="id-batalha-rede-c" placeholder="ID Batalha" />
+            <input type="number" id="id-batalha-rede-c" placeholder="ID da Batalha" />
             <select id="acao-rede-c">
-              <option value="ATACAR">Atacar</option>
-              <option value="DEFENDER">Defender</option>
-              <option value="PODER">Poder</option>
+              <option value="ATACAR">Atacar 🗡️</option>
+              <option value="DEFENDER">Defender 🛡️</option>
+              <option value="PODER">Poder 🌟</option>
             </select>
             <button onclick="enviarAcaoCliente()">Enviar Ação</button>
           </div>
           <span style="font-size: 12px; color: #aaa"
-            >(Após enviar, o Host precisa rodar o turno no PC dele)</span
+            >Avise o Host no chat que você já enviou a ação, para ele poder jogar o turno
+            dele.</span
           >
         </div>
 
         <div id="bloco-host" class="bloco-rede">
-          <label>Você calcula o Round e manda pro Cliente!</label>
+          <label style="color: #e94560; font-weight: bold"
+            >(2º) Você roda o combate depois que o cliente já enviou a ação dele!</label
+          >
           <div class="row">
-            <input type="number" id="id-batalha-rede-h" placeholder="ID Batalha" />
+            <input type="number" id="id-batalha-rede-h" placeholder="ID da Batalha" />
             <select id="acao-rede-h">
-              <option value="ATACAR">Atacar</option>
-              <option value="DEFENDER">Defender</option>
-              <option value="PODER">Poder</option>
+              <option value="ATACAR">Atacar 🗡️</option>
+              <option value="DEFENDER">Defender 🛡️</option>
+              <option value="PODER">Poder 🌟</option>
             </select>
           </div>
           <div class="row">
-            <input type="text" id="url-cliente" placeholder="http://192.168.0.20:8080" />
-            <button onclick="executarAcaoHost()">Executar Turno!</button>
+            <input
+              type="text"
+              id="url-cliente"
+              value="https://desafio-final-rpg-kotlin.onrender.com"
+              readonly
+              style="color: #666; background: #222"
+            />
+            <button onclick="executarAcaoHost()">Executar Turno e Sincronizar!</button>
           </div>
           <span style="font-size: 12px; color: #aaa"
-            >(Certifique-se de que o Cliente já enviou a ação dele antes)</span
+            >(Se você tentar rodar sem o cliente ter enviado a ação dele, o servidor vai
+            bloquear).</span
           >
         </div>
 
@@ -539,14 +604,25 @@
       }
 
       async function listarPersonagens() {
-        const personagens = await getPersonagens();
         const lista = document.getElementById('lista-personagens');
-        lista.innerHTML = '';
-        personagens.forEach((personagem) => {
-          const li = document.createElement('li');
-          li.innerHTML = `<strong>ID ${personagem.id}:</strong> ${personagem.nome} <em>(${personagem.tipo_personagem || 'Lutador'})</em>`;
-          lista.appendChild(li);
-        });
+        try {
+          lista.innerHTML = '<li>Carregando personagens...</li>';
+          const personagens = await getPersonagens();
+          lista.innerHTML = '';
+
+          if (!personagens || personagens.length === 0) {
+            lista.innerHTML = '<li>Nenhum personagem encontrado no banco de dados.</li>';
+            return;
+          }
+
+          personagens.forEach((personagem) => {
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>ID ${personagem.id}:</strong> ${personagem.nome} <em>(${personagem.tipo_personagem || 'Lutador'})</em>`;
+            lista.appendChild(li);
+          });
+        } catch (error) {
+          lista.innerHTML = `<li style="color: red;">Erro ao carregar personagens: ${error.message}. (Verifique se a API está online e se o CORS foi configurado)</li>`;
+        }
       }
 
       // ─────────────────────────────────────────────────────────────────────────────
