@@ -20,9 +20,8 @@ import org.springframework.beans.factory.annotation.Value
 class BatalhaService(
     private val personagemRepository: PersonagemRepository,
     private val batalhaRepository: BatalhaRepository,
-    restClientBuilder: RestClient.Builder
+    private val restClient: RestClient // Bean criado no CorsConfig
 ) {
-    private val restClient: RestClient = restClientBuilder.build()
 
     // Inicia a batalha no banco
     @Transactional

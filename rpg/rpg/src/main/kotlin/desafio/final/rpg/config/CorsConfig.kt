@@ -1,11 +1,19 @@
 package desafio.final.rpg.config
 
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.web.client.RestClient
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
 class CorsConfig: WebMvcConfigurer {
+
+    // Cria o cliente HTTP para o serviço de sincronização de batalha
+    @Bean
+    fun restClient(): RestClient {
+        return RestClient.create()
+    }
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
