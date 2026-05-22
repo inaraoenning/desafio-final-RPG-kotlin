@@ -1,20 +1,16 @@
 package desafio.final.rpg.config
 
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.web.SecurityFilterChain
 
-@Configuration  // roda em paralelo a aplicação
-@EnableWebSecurity
+@Configuration
 class CorsConfig: WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:4200", "https://github.vercel.app")
-            .allowedMethods("GET", "POST", "PUT", "DELETE")
+            .allowedOrigins("https://inaraoenning.github.io", "http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:5500")
+            .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // OPTIONS é vital para o CORS preflight
             .allowedHeaders("*")
             .allowCredentials(false)
     }

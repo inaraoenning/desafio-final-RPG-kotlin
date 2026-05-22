@@ -20,8 +20,9 @@ import org.springframework.beans.factory.annotation.Value
 class BatalhaService(
     private val personagemRepository: PersonagemRepository,
     private val batalhaRepository: BatalhaRepository,
-    private val restClient: RestClient
+    restClientBuilder: RestClient.Builder
 ) {
+    private val restClient: RestClient = restClientBuilder.build()
 
     // Inicia a batalha no banco
     @Transactional
@@ -145,7 +146,7 @@ class BatalhaService(
 
         try {
             restClient.post()
-                .uri("$urlFinal/rede/sincronizar-resultado")
+                .uri("$urlFinal/batalha/sincronizar-resultado")
                 .body(resultadoDTO)
                 .retrieve()
                 .body(String::class.java)

@@ -648,7 +648,7 @@
         }
 
         try {
-          const res = await fetch(`${API_URL}/rede/enviar-acao`, {
+          const res = await fetch(`${API_URL}/batalha/enviar-acao`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idBatalha: Number(id), acao: acao }),
@@ -675,7 +675,7 @@
         }
 
         try {
-          const res = await fetch(`${API_URL}/rede/executar-acao-host`, {
+          const res = await fetch(`${API_URL}/batalha/executar-acao-host`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ idBatalha: Number(id), acao: acao, urlCliente: urlCliente }),
