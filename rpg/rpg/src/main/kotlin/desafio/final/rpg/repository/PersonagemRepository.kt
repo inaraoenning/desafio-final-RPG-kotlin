@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PersonagemRepository: JpaRepository<Personagem, Long> {
-    fun nome(nome: String): MutableList<Personagem>
+    fun findBynome(nome: String): MutableList<Personagem>
     fun deletePersonagemsByNome(nome: String): Personagem
 }

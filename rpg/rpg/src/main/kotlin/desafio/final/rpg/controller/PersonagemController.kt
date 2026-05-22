@@ -7,7 +7,6 @@ import desafio.final.rpg.repository.PersonagemRepository
 
 @RestController
 @RequestMapping("/personagem")
-@CrossOrigin(origins = ["*"])
 class PersonagemController(private val repository: PersonagemRepository) {
 
     @GetMapping
