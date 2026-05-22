@@ -8,42 +8,28 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer
 
 // @EnableWebSocketMessageBroker: ativa o suporte completo a WebSocket com protocolo STOMP
-// STOMP = Simple text Oriented Messaging Protocol
 @Configuration
 @CrossOrigin(origins = ["*"])
 @EnableWebSocketMessageBroker
 
 class WebSocketConfig : WebSocketMessageBrokerConfigurer {
 
-    // configureMenssageBroker: define ocmo as mensagens são ROTEADAS no servidor
+    // configureMenssageBroker: define como as mensagens são ROTEADAS no servidor.
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
 
-        // enaleSimpleBroker: cria um "distribuidor" de mensagens simples em memória.
-        // qualquer mensagem enviada epara "/topic/..." será transmitida para TODOS os clientes
-        // que estiverem "assinados" (subscribed) naquele destino
+        // Cria o canal "/topic". O que for enviado para ca, todos que estão conectos recebem.
         config.enableSimpleBroker("/topic")
 
-        // setApplicationDestinationPrefixes: define o prefixo das mensagens que chegam
-        // do cliente e precisam ser PROCESSADAS pro um método @MessageMapping no setvidor.
-        // Ou seja: mensagem chegando em "/app/chat.enviar" -> vai para o método mapeado.
         config.setApplicationDestinationPrefixes("/app")
     }
 
-    // registerStompEndpoinst: define a URL onde os clientes fazem a conexão WebSocket inicial;
-    // É o "ponto de entrada" da conexão - como um endereço de prota de um prédio.
+    // registerStompEndpoinst: define a URL onde os clientes fazem a conexão WebSocket inicial
     override fun registerStompEndpoints(registry: StompEndpointRegistry) {
-
-        // addEndpoint: registra o caminho "/chat-websocket" como ponto de conexão;
-        // setAllowedOriginPatterns("*"): permite conexões de qualquer origem (necessário
-        // para testar locais com HTML aberto direto no navegador sem servidor).
-        // withSockJS: adiciona suporte ao SockJS, uma biblioteca JavaScript que usa
-        // WebSocket quando disponível, e cai para HTTP long-polling como fallback
-        // garantido que funcione em todos os navegadores.
 
         registry.addEndpoint("/chat-websocket")
             .setAllowedOriginPatterns("*")
+            // Adicona o SockJS, que garente o funcionamento mesmo se o navegador não suportar WebSocket.
             .withSockJS()
-
 
     }
 }
