@@ -15,7 +15,8 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/batalha")
 class BatalhaController(
     // injeção de dependência: o Sping fornece as instãncias automaticamente.
-    private val batalhaService: BatalhaService, private val batalhaRepository: BatalhaRepository
+    private val batalhaService: BatalhaService,
+    private val batalhaRepository: BatalhaRepository
 ) {
 
     // ENDPOINT 1 - POST /batalha/iniciar
