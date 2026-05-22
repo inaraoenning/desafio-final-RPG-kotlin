@@ -17,7 +17,7 @@ class CorsConfig: WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("https://rpg-glloci8vk-feyre-heads-projects.vercel.app/", "http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:5500", "https://0.0.0.0:8080")
+            .allowedOrigins("https://rpg-o5vgpe9h4-feyre-heads-projects.vercel.app/", "http://localhost:4200", "http://localhost:8080", "http://127.0.0.1:5500", "https://0.0.0.0:8080")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // OPTIONS é vital para o CORS preflight
             .allowedHeaders("*")
             .allowCredentials(false)
