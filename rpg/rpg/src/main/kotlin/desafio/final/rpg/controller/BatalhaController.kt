@@ -2,6 +2,8 @@ package desafio.final.rpg.controller
 
 import desafio.final.rpg.model.AcaoRedeDTO
 import desafio.final.rpg.model.Batalha
+import desafio.final.rpg.model.ExecutarAcaoHostDTO
+import desafio.final.rpg.model.IniciarBatalhaDTO
 import desafio.final.rpg.model.ResultadoRoundDTO
 import desafio.final.rpg.repository.BatalhaRepository
 import desafio.final.rpg.service.BatalhaService
@@ -20,17 +22,8 @@ class BatalhaController(
     // Responsabilidade: criar uma nova batalha no banco entre dois personagens.
     // o campo JSON deve conter: {"idPersonagem": 1, "idPersonagem2": 2)
     @PostMapping("/iniciar")
-    fun iniciarBatalha(@RequestBody payload: Map<String, Long>): ResponseEntity<Batalha> {
-        // Extrai os IDs do corpo da requisição
-        // O operador ?: lança exceção com mensagem se o campo não existir no JSON
-        val id1 = payload["idPersonagem1"] ?: throw IllegalStateException("IdPersonagem1 é obrigatorio")
-        val id2 = payload["idPersonagem2"] ?: throw IllegalStateException("IdPersonagem2 é obrigatorio")
-
-        // Delega a criação ao Service (que contém as regras de negocio)
-        // O Controller so orquesta - nunca tem lógica de jogo direto nele.
-        val batalha = batalhaService.iniciarNovaBatalha(id1, id2)
-
-        // ResponseEntity.ok() retorna HTTP 200 com objeto Batalha serializado em JSON
+    fun iniciarBatalha(@RequestBody dto: IniciarBatalhaDTO): ResponseEntity<Batalha> {
+        val batalha = batalhaService.iniciarNovaBatalha(dto.idPersonagem1, dto.idPersonagem2)
         return ResponseEntity.ok(batalha)
     }
 
@@ -42,12 +35,9 @@ class BatalhaController(
 
     // Host executa a sua ação e roda o round inteiro
     @PostMapping("/executar-acao-host")
-    fun executarAcaoHost(@RequestBody payload: Map<String, Any>): Any {
-        val idBatalha = (payload["idBatalha"] as? Number)?.toLong() ?: return "Erro: idBatalha inválido"
-        val acaoHost = payload["acao"] as? String ?: return "Erro: acao inválida"
-        val urlCliente = payload["urlCliente"] as? String
-
-        return batalhaService.processarRoundHost(idBatalha, acaoHost, urlCliente)
+    fun executarAcaoHost(@RequestBody dto: ExecutarAcaoHostDTO): ResponseEntity<Any> {
+        val resultado = batalhaService.processarRoundHost(dto.idBatalha, dto.acao, dto.urlCliente)
+        return ResponseEntity.ok(resultado)
     }
 
     // Cliente recebe o resultado pronto do Host

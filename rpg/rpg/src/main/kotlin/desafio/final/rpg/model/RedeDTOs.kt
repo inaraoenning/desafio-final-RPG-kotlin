@@ -13,3 +13,14 @@ data class ResultadoRoundDTO(
     val encerrada: Boolean,
     val vencedor: String?
 )
+
+data class IniciarBatalhaDTO(
+    val idPersonagem1: Long,
+    val idPersonagem2: Long
+)
+
+data class ExecutarAcaoHostDTO(
+    val idBatalha: Long,
+    val acao: String,
+    val urlCliente: String? = null
+)
