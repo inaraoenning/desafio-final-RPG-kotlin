@@ -1,8 +1,8 @@
 package desafio.final.rpg.model
 
-import jakarta.persistence.*
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "personagem")
@@ -21,7 +21,6 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 )
 abstract class Personagem(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Identificador único
-    val id: Long = 0,
     val nome: String,
     var forca: Int,
     var velocidade: Int,
@@ -29,6 +28,7 @@ abstract class Personagem(
 ) {
     open fun usarPoder(adversario: Personagem) {
         println("O herói $nome usou poder!")
+        adversario.receberDano(this.forca * 3)
     }
 
     // calc o mais rápido e descontar a Força da Vida do adversário.
@@ -39,10 +39,12 @@ abstract class Personagem(
 
             println("$nome é foi mais rápido e atacou 🤺 primeiro! causando $danoFinal a ${adversario.vida}")
             adversario.receberDano(danoFinal)
+            return // early return
+        } else {
+            println("${adversario.nome} esquivou do ataque!")
         }
-        
-        println("${adversario.nome} esquivou do ataque!")
-        return // early return
+        return
+
     }
 
 
