@@ -27,12 +27,12 @@ abstract class Personagem(
     var velocidade: Int,
     var vida: Int
 ) {
-    fun usarPoder(adversario: Personagem) {
+    open fun usarPoder(adversario: Personagem) {
         println("O herói $nome usou poder!")
     }
 
     // calc o mais rápido e descontar a Força da Vida do adversário.
-    fun atacar(adversario: Personagem, danoEspecial: Int? = null) {
+    open fun atacar(adversario: Personagem, danoEspecial: Int? = null) {
         val danoFinal = danoEspecial ?: this.forca // Se houver dano especial
 
         if (this.velocidade >= adversario.velocidade) {
@@ -46,7 +46,7 @@ abstract class Personagem(
     }
 
 
-    fun defender(adversario: Personagem) {
+    open fun defender(adversario: Personagem) {
         // Calcula se a Velocidade é maior que a Força do adversário
         if (this.velocidade < adversario.forca) {
             print(" 💨 Você agiu rápido e esquivou do ataque! 💨 ")

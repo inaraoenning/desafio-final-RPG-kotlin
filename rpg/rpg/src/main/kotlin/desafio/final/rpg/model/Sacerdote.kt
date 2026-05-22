@@ -16,18 +16,34 @@ class Sacerdote(nome: String, forca: Int, velocidade: Int, var vidaMaxima: Int, 
         val vidaPerdida = this.vidaMaxima - this.vida
 
         if (vidaPerdida <= 0) {
-            println("$nome tentou usar Penitência, mas está com a vida cheia!")
+            println("$nome tentou usar Penitência, mas está com a vida cheia! O feitiço falhou.")
             return
         }
 
-        // Lógica de Cura: Recupera metade da vida perdida
-        val cura = vidaPerdida / 2
+        // Lógica de Cura: Recupera metade da vida perdida + atributo penitência
+        val cura = (vidaPerdida / 2) + this.penitencia
         this.vida += cura
-        println("$nome se curou em $cura pontos! ❤️")
+        if (this.vida > this.vidaMaxima) this.vida = this.vidaMaxima
+        println("$nome usou sua penitência e se curou em $cura pontos! ❤️ (Vida atual: $vida)")
 
-        // Lógica de Dano: Causa dano baseado na vida que ainda falta
-        // Ex: Causa 100% da vida perdida como dano no inimigo
-        println("A agonia de $nome é refletida em seu adversário!")
-        adversario.receberDano(vidaPerdida)
+        // Lógica de Dano: Causa dano baseado na vida perdida + penitência
+        val danoDivino = vidaPerdida + this.penitencia
+        println("A agonia e a fé de $nome são refletidas no adversário!")
+        adversario.receberDano(danoDivino)
+    }
+
+    override fun atacar(adversario: Personagem, danoEspecial: Int?) {
+        println("$nome ataca com força divina! ⚔️")
+        super.atacar(adversario, danoEspecial = danoEspecial ?: forca)
+    }
+
+    override fun defender(adversario: Personagem) {
+        println(" 🛡️ $nome invoca uma barreira de fé!")
+        val danoReduzido = adversario.forca - this.penitencia // Reduz o dano usando penitência
+        if (danoReduzido <= 0) {
+            println("A barreira de fé anulou completamente o ataque do inimigo!")
+        } else {
+            this.receberDano(danoReduzido)
+        }
     }
 }

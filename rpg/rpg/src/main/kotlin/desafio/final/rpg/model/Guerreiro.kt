@@ -7,9 +7,14 @@ import jakarta.persistence.*
 class Guerreiro(nome: String, forca: Int, velocidade: Int, vida: Int, var defesa: Int) :
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
-    override fun usarPoder(adversario:Personagem) {
-        println("$nome, Ativou postura defensiva! 💢 ")
-        // Desconto dano na defesa aplicado no momento do impacto
+    override fun usarPoder(adversario: Personagem) {
+        this.defesa += 10 // Aumenta a defesa temporariamente
+        println("$nome ativou postura defensiva e ganhou +10 de Defesa! 🛡️ (Defesa atual: $defesa)")
+    }
+
+    override fun defender(adversario: Personagem) {
+        println("$nome levanta o escudo pesado para aguentar o impacto! 🛡️")
+        this.receberDano(adversario.forca) // Direciona o dano para a armadura do Guerreiro
     }
 
     // Quando o ataque chamar "receberDano",
