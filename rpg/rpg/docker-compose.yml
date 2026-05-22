@@ -2,13 +2,13 @@ version: '3.8'
 
 services:
   db:
-    image: postgres:15
-    container_name: rpg-postgres
+    image: postgres:18
+    container_name: rpg-db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: control-rpg
-    ports:
+      POSTGRES_USER: control_57xc_user
+      POSTGRES_PASSWORD: ofa8nEy3OwAxmDbK78B4LGf65lK9b4Re
+      POSTGRES_DB: control_57xc
+    ports: 
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -20,11 +20,12 @@ services:
 
   app:
     build: .
-    container_name: rpg-api
+    container_name: control-kt
     ports:
       - "8080:8080"
     environment:
-      - DB_URL=jdbc:postgresql://db:5432/control-rpg
+      # - DB_URL=jdbc:postgresql://db:5432/control-kt
+      - DB_URL=jdbc:postgresql://dpg-d87jvje7r5hc738muvj0-a/control_57xc
     depends_on:
       db:
         condition: service_healthy
