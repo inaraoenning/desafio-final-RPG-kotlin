@@ -11,7 +11,11 @@ import org.springframework.web.bind.annotation.*
 // @RequesMapping("/batala"): todos os endpoints desta classe começam com /batalha
 @RestController
 @RequestMapping("/batalha")
+<<<<<<< HEAD
 class BatalhaController(
+=======
+class BatalhaController (
+>>>>>>> tela-rpg
     // injeção de dependência: o Sping fornece as instãncias automaticamente.
     private val batalhaService: BatalhaService, private val batalhaRepository: BatalhaRepository
 ) {
