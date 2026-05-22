@@ -24,3 +24,18 @@ data class ExecutarAcaoHostDTO(
     val acao: String,
     val urlCliente: String? = null
 )
+
+data class StatusPersonagemDTO(
+    val nome: String,
+    val vida: Int,
+    val forca: Int
+)
+
+data class StatusBatalhaDTO(
+    val id: Long?,
+    val encerrada: Boolean,
+    val vencedor: String,
+    val personagem1: StatusPersonagemDTO,
+    val personagem2: StatusPersonagemDTO,
+    val log: String
+)

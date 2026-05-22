@@ -6,6 +6,8 @@ import desafio.final.rpg.model.Personagem
 import desafio.final.rpg.model.Sacerdote
 import desafio.final.rpg.model.AcaoRedeDTO
 import desafio.final.rpg.model.ResultadoRoundDTO
+import desafio.final.rpg.model.StatusBatalhaDTO
+import desafio.final.rpg.model.StatusPersonagemDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import desafio.final.rpg.repository.BatalhaRepository
@@ -173,5 +175,36 @@ class BatalhaService(
         batalhaRepository.save(batalha)
 
         return "Resultado do round sincronizado com sucesso!"
+    }
+
+    // Métodos de Consulta ajustados
+    fun consultarEstadoBatalha(id: Long): StatusBatalhaDTO? {
+        val batalha = batalhaRepository.findById(id).orElse(null) ?: return null
+        return batalha.toStatusDTO()
+    }
+
+    fun listarTodasBatalha(): List<StatusBatalhaDTO>{
+        val batalha = batalhaRepository.findAll()
+        return batalha.map { it.toStatusDTO() } // Transforma a lista inteira de uma vez
+    }
+
+    // Função de extensão privada utilizada internamente para conversão
+    private fun Batalha.toStatusDTO(): StatusBatalhaDTO {
+        return StatusBatalhaDTO(
+            id = this.id,
+            encerrada = this.encerrada,
+            vencedor = this.nomeVencedor ?: "Em andamento",
+            personagem1 = StatusPersonagemDTO(
+                nome = this.personagem1.nome,
+                vida = this.personagem1.vida,
+                forca = this.personagem1.forca
+            ),
+            personagem2 = StatusPersonagemDTO(
+                nome = this.personagem2.nome,
+                vida = this.personagem2.vida,
+                forca = this.personagem2.forca
+            ),
+            log = this.logDescritivo
+        )
     }
 }
