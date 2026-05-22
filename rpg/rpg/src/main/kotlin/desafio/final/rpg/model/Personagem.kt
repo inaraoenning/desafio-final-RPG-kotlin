@@ -21,6 +21,7 @@ import jakarta.persistence.*
 )
 abstract class Personagem(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Identificador único
+    val id: Long? = null,
     val nome: String,
     var forca: Int,
     var velocidade: Int,
