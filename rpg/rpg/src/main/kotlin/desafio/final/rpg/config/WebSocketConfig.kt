@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @CrossOrigin(origins = ["*"])
 @EnableWebSocketMessageBroker
 
-class WebScoketConfig : WebSocketMessageBrokerConfigurer {
+class WebSocketConfig : WebSocketMessageBrokerConfigurer {
 
     // configureMenssageBroker: define ocmo as mensagens são ROTEADAS no servidor
     override fun configureMessageBroker(config: MessageBrokerRegistry) {
