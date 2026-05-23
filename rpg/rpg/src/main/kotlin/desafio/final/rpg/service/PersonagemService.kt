@@ -8,24 +8,14 @@ import desafio.final.rpg.repository.PersonagemRepository
 class PersonagemService(
     val personagemRepository: PersonagemRepository
 ) {
-
     // Salvar
-    fun salvar(personagem: Personagem): Personagem {
-        return personagemRepository.save(personagem) // Jpa: se já tiver primary key atualiza os dados senão cria um novo
-    }
+    fun salvar(personagem: Personagem) = personagemRepository.save(personagem) // Jpa: se já tiver primary key atualiza os dados senão cria um novo
 
     // Buscar
-    fun buscarTodos():List<Personagem>{
-        return personagemRepository.findAll()
-    }
-    fun buscarPorId(id: Long):Personagem{
-        return personagemRepository.findById(id).get()
-    }
+    fun buscarTodos():List<Personagem> = personagemRepository.findAll()
 
     // Excluir
-    fun excluirPersonagem(nome:String):Personagem{
-        return personagemRepository.deletePersonagemsByNome(nome)
-    }
+    fun excluirPersonagem(id: Long) = personagemRepository.deleteById(id)
 
     // Ressuscitar
     fun ressuscitarMortos(): List<Personagem> {
