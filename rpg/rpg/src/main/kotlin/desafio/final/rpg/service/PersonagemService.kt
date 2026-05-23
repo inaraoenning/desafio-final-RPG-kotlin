@@ -26,4 +26,15 @@ class PersonagemService(
     fun excluirPersonagem(nome:String):Personagem{
         return personagemRepository.deletePersonagemsByNome(nome)
     }
+
+    // Ressuscitar
+    fun ressuscitarMortos(): List<Personagem> {
+        val personagensMortos = personagemRepository.findByVidaLessThanEqual(0)
+
+        personagensMortos.forEach { personagem ->
+            personagem.vida = 100
+        }
+
+        return personagemRepository.saveAll(personagensMortos)
+    }
 }

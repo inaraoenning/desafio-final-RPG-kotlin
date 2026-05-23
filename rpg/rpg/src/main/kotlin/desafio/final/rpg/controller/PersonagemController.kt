@@ -4,6 +4,7 @@ package desafio.final.rpg.controller
 import desafio.final.rpg.model.Personagem
 import org.springframework.web.bind.annotation.*
 import desafio.final.rpg.repository.PersonagemRepository
+import desafio.final.rpg.service.PersonagemService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 
@@ -13,7 +14,8 @@ import io.swagger.v3.oas.annotations.tags.Tag
     name = "Personagem",
     description = "API para gerencimaento de personagens"
 )
-class PersonagemController(private val repository: PersonagemRepository) {
+class PersonagemController(private val repository: PersonagemRepository,
+    private val personagemService: PersonagemService) {
 
     @Operation(
         summary = "Lista todos os personagens",
@@ -35,4 +37,11 @@ class PersonagemController(private val repository: PersonagemRepository) {
     )
     @DeleteMapping("/{id}")
     fun deletar(@PathVariable id: Long) = repository.deleteById(id)
+
+    @Operation(
+        summary = "Ressucita personagens mortos",
+        description = "Busca todos os personagens com vida <= 0 e restura a vida deles para 100"
+    )
+    @PutMapping("/ressuscitar")
+    fun ressuscitarMortos(): List<Personagem> = personagemService.ressuscitarMortos()
 }
