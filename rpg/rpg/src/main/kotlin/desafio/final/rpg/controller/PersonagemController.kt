@@ -11,7 +11,8 @@ import io.swagger.v3.oas.annotations.tags.Tag
 @RequestMapping("/personagem")
 @Tag(
     name = "Personagem",
-    description = "API para gerencimaento de personagens")
+    description = "API para gerencimaento de personagens"
+)
 class PersonagemController(private val repository: PersonagemRepository) {
 
     @Operation(
