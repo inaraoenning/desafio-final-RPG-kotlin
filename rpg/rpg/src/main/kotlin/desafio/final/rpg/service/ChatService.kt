@@ -8,7 +8,6 @@ import org.springframework.messaging.simp.stomp.StompHeaderAccessor
 import org.springframework.stereotype.Service
 import org.springframework.web.socket.messaging.SessionDisconnectEvent
 
-
 @Service
 class ChatService(
     private val messagingTemplate: SimpMessageSendingOperations
@@ -27,5 +26,4 @@ class ChatService(
             messagingTemplate.convertAndSend("/topic/mensagens", mensagemSaida)
         }
     }
-
 }

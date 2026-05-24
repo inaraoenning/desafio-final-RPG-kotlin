@@ -8,8 +8,6 @@ import org.springframework.messaging.handler.annotation.SendTo
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor
 import org.springframework.stereotype.Controller
 
-
-// @Controller porque não estamos respondendo a requisições HTTP normais, mas sim STOMP
 @Controller
 class ChatController {
 
@@ -18,7 +16,7 @@ class ChatController {
     @SendTo("/topic/mensagens")
     fun enviarMensagem(@Payload mensagem: MensagemChat): MensagemChat = mensagem
 
-
+    //
     @MessageMapping("/chat.entrar")
     @SendTo("/topic/mensagens")
     fun adicionarUsuario (

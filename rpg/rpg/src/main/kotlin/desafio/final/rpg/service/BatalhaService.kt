@@ -101,7 +101,6 @@ class BatalhaService(
     private lateinit var defaultUrlRival: String
 
 
-
     // --- NOVA LÓGICA HOST-CLIENT ---
 
     @Transactional
