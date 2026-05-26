@@ -78,4 +78,5 @@ abstract class Personagem(
         if(this.vida < 0) this.vida = 0 // Se a vida ficou negativa, zera ela
 
         println("❤️ $nome recebeu $danoReal de dano! (Restante: $vida)")
+    }
 }
