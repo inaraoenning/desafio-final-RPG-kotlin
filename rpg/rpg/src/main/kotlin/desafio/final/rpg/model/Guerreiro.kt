@@ -4,12 +4,20 @@ import jakarta.persistence.*
 
 @Entity
 @DiscriminatorValue("GUERREIRO")
-class Guerreiro(nome: String, forca: Int, velocidade: Int, vida: Int, var defesa: Int) :
+class Guerreiro(
+    nome: String, 
+    forca: Int, 
+    velocidade: Int, 
+    vida: Int, 
+    var defesa: Int
+    ) :
     Personagem(nome = nome, forca = forca, velocidade = velocidade, vida = vida) {
 
     override fun usarPoder(adversario: Personagem) {
-        this.defesa += 10 // Aumenta a defesa temporariamente
-        println("$nome ativou postura defensiva e ganhou +10 de Defesa! 🛡️ (Defesa atual: $defesa)")
+       
+            this.defesa += 10 // Aumenta a defesa temporariamente
+            println("$nome ativou postura defensiva e ganhou +10 de Defesa! 🛡️ (Defesa atual: $defesa)")
+       
     }
 
     override fun defender(adversario: Personagem) {

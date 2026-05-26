@@ -75,7 +75,7 @@ class BatalhaService(
             "PODER" -> {
                 batalha.adicionarLog("${ativo.nome} usou seu PODER ESPECIAL!")
                 // Polimorfismo: o Kotlin chama o poder específico de cada classe
-                ativo.usarPoder(alvo)
+                ativo.tentarUsarPoder(alvo)
 
             }
             "DEFENDER" -> {
