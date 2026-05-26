@@ -18,11 +18,21 @@ class Ladino(nome: String, forca: Int, velocidade: Int, vida: Int, var sagacidad
     }
 
     override fun defender(adversario: Personagem) {
-        // Ladino soma sagacidade com velocidade para esquivar
-        if ((this.velocidade + this.sagacidade) >= adversario.forca) {
-            println(" 💨 $nome usou sua agilidade e esquivou completamente do ataque! 💨 ")
-        } else {
-            this.receberDano(adversario.forca) // Se falhar a esquiva, toma o dano
+        println(" 💨 $nome se prepara para usar sua agilidade extrema! 💨 ")
+        super.defender(adversario)
+    }
+
+    override fun receberDano(valor: Int) {
+        // Ladino soma sagacidade com velocidade para tentar esquivar se estiver defendendo
+        if (this.estaDefendendo) {
+            if ((this.velocidade + this.sagacidade) >= valor) {
+                println(" 💨 $nome usou sua agilidade e esquivou completamente do ataque! 💨 ")
+                this.estaDefendendo = false
+                return
+            }
+            println(" 💨 $nome tentou esquivar, mas não foi rápido o suficiente! 💨 ")
         }
+        
+        super.receberDano(valor)
     }
 }

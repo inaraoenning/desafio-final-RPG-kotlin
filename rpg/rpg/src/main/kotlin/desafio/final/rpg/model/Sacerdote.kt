@@ -38,12 +38,22 @@ class Sacerdote(nome: String, forca: Int, velocidade: Int, var vidaMaxima: Int, 
     }
 
     override fun defender(adversario: Personagem) {
-        println(" 🛡️ $nome invoca uma barreira de fé!")
-        val danoReduzido = adversario.forca - this.penitencia // Reduz o dano usando penitência
-        if (danoReduzido <= 0) {
-            println("A barreira de fé anulou completamente o ataque do inimigo!")
-        } else {
-            this.receberDano(danoReduzido)
+        println(" 🛡️ $nome invoca uma barreira de fé para o próximo ataque!")
+        super.defender(adversario)
+    }
+
+    override fun receberDano(valor: Int) {
+        var danoRestante = valor
+        if (this.estaDefendendo) {
+            println("🛡️ A barreira de fé amortece o impacto com ${this.penitencia} de poder!")
+            danoRestante -= this.penitencia
+            
+            if (danoRestante <= 0) {
+                println("A barreira anulou completamente o ataque!")
+                this.estaDefendendo = false
+                return
+            }
         }
+        super.receberDano(danoRestante)
     }
 }

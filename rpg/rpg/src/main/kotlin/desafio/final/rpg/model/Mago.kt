@@ -20,13 +20,26 @@ class Mago(nome: String, forca: Int, velocidade: Int, vida: Int, var magia: Int)
     }
 
     override fun defender(adversario: Personagem) {
-        // Escudo de mana: gasta magia para absorver o dano
-        if (this.magia >= adversario.forca) {
-            println(" 🛡️ O ataque foi absorvido pelo escudo de mana de $nome! (Custou ${adversario.forca} de Magia)")
-            this.magia -= adversario.forca
-        } else {
-            println(" 💥 O escudo de mana de $nome não foi forte o suficiente!")
-            this.receberDano(adversario.forca)
+        println(" 🔮 $nome prepara seu escudo de mana para o próximo ataque!")
+        super.defender(adversario)
+    }
+
+    override fun receberDano(valor: Int) {
+        var danoRestante = valor
+        
+        // Escudo de mana: gasta magia para absorver o dano se estiver defendendo
+        if (this.estaDefendendo && this.magia > 0) {
+            if (this.magia >= valor) {
+                println(" 🛡️ O ataque foi absorvido pelo escudo de mana de $nome! (Custou $valor de Magia)")
+                this.magia -= valor
+                this.estaDefendendo = false
+                return
+            } else {
+                println(" 💥 O escudo de mana de $nome foi quebrado! (Absorveu ${this.magia})")
+                danoRestante -= this.magia
+                this.magia = 0
+            }
         }
+        super.receberDano(danoRestante)
     }
 }

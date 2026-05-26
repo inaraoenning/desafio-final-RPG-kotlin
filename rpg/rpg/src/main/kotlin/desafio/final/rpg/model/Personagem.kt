@@ -64,13 +64,11 @@ abstract class Personagem(
     open fun receberDano(valor: Int) {
         var danoReal = valor
 
-        // se estava defendendo toma metado do dano
+        // se estava defendendo toma metade do dano
         if(this.estaDefendendo){
-        danoReal = valor /2 
-        this.vida -= danoReal
-        print(" 💨 $nome agiu rápido e defendeu do ataque, reduzindo o dano pela metade! $danoReal$  💨 ")
-        this.estaDefendendo = false // Remove a defesa após sofrer o golpe
-        return
+            danoReal = valor / 2 
+            print(" 🛡️ $nome defendeu o ataque, reduzindo o dano pela metade! ($danoReal) 🛡️ \n")
+            this.estaDefendendo = false // Remove a defesa após sofrer o golpe
         }
 
         this.vida -= danoReal
