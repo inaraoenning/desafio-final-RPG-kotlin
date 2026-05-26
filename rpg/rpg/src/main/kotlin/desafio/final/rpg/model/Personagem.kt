@@ -1,8 +1,8 @@
 package desafio.final.rpg.model
 
-import jakarta.persistence.*
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import jakarta.persistence.*
 
 @Entity
 @Table(name = "personagem")
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes
 )
 abstract class Personagem(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // Identificador único
-    val id: Long = 0,
+    val id: Long? = null,
     val nome: String,
     var forca: Int,
     var velocidade: Int,
