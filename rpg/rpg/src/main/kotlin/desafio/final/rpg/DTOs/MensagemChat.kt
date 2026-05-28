@@ -1,4 +1,4 @@
-package desafio.final.rpg.model
+package desafio.final.rpg.DTOs
 
 class MensagemChat (
     val remetente: String = "",

@@ -1,7 +1,7 @@
 package desafio.final.rpg.service
 
-import desafio.final.rpg.model.MensagemChat
-import desafio.final.rpg.model.TipoMensagem
+import desafio.final.rpg.DTOs.MensagemChat
+import desafio.final.rpg.DTOs.TipoMensagem
 import org.springframework.context.event.EventListener
 import org.springframework.messaging.simp.SimpMessageSendingOperations
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor

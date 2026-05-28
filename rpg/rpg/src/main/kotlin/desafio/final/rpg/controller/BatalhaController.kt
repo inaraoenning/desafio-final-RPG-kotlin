@@ -1,11 +1,11 @@
 package desafio.final.rpg.controller
 
-import desafio.final.rpg.model.AcaoRedeDTO
+import desafio.final.rpg.DTOs.AcaoRedeDTO
 import desafio.final.rpg.model.Batalha
-import desafio.final.rpg.model.ExecutarAcaoHostDTO
-import desafio.final.rpg.model.IniciarBatalhaDTO
-import desafio.final.rpg.model.ResultadoRoundDTO
-import desafio.final.rpg.model.StatusBatalhaDTO
+import desafio.final.rpg.DTOs.ExecutarAcaoHostDTO
+import desafio.final.rpg.DTOs.IniciarBatalhaDTO
+import desafio.final.rpg.DTOs.ResultadoRoundDTO
+import desafio.final.rpg.DTOs.StatusBatalhaDTO
 import desafio.final.rpg.service.BatalhaService
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse

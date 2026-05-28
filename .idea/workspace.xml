@@ -4,12 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4337e92c-1f67-45c6-b6c8-e2fc5852fb9a" name="Changes" comment="Add doc balanceamento personagens para inserir no DB">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/controller/BatalhaRedeController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/controller/BatalhaRedeController.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/model/Batalha.kt" beforeDir="false" afterPath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/model/Batalha.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/service/BatalhaService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/rpg/rpg/src/main/kotlin/desafio/final/rpg/service/BatalhaService.kt" afterDir="false" />
-    </list>
+    <list default="true" id="4337e92c-1f67-45c6-b6c8-e2fc5852fb9a" name="Changes" comment="Add doc balanceamento personagens para inserir no DB" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -29,12 +24,12 @@
     &quot;assignee&quot;: &quot;inaraoenning&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/inaraoenning/desafio-final-RPG-kotlin.git&quot;,
-    &quot;accountId&quot;: &quot;32d7098e-8277-43b5-b455-a3b2fe0c0135&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/inaraoenning/desafio-final-RPG-kotlin",
+    "accountId": "32d7098e-8277-43b5-b455-a3b2fe0c0135"
   }
-}</component>
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -47,21 +42,21 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Feyre/Desktop/desafio-final-RPG-kotlin&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Admin/Pictures/desafio-final-RPG-kotlin",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

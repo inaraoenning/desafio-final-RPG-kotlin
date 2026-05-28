@@ -1,13 +1,10 @@
 package desafio.final.rpg.service
 
 import desafio.final.rpg.model.Batalha
-import desafio.final.rpg.model.Ladino
 import desafio.final.rpg.model.Personagem
-import desafio.final.rpg.model.Sacerdote
-import desafio.final.rpg.model.AcaoRedeDTO
-import desafio.final.rpg.model.ResultadoRoundDTO
-import desafio.final.rpg.model.StatusBatalhaDTO
-import desafio.final.rpg.model.StatusPersonagemDTO
+import desafio.final.rpg.DTOs.ResultadoRoundDTO
+import desafio.final.rpg.DTOs.StatusBatalhaDTO
+import desafio.final.rpg.DTOs.StatusPersonagemDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import desafio.final.rpg.repository.BatalhaRepository

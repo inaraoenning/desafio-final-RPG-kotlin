@@ -1,7 +1,7 @@
 package desafio.final.rpg.controller
 
-import desafio.final.rpg.model.MensagemChat
-import desafio.final.rpg.model.TipoMensagem
+import desafio.final.rpg.DTOs.MensagemChat
+import desafio.final.rpg.DTOs.TipoMensagem
 import org.springframework.messaging.handler.annotation.MessageMapping
 import org.springframework.messaging.handler.annotation.Payload
 import org.springframework.messaging.handler.annotation.SendTo

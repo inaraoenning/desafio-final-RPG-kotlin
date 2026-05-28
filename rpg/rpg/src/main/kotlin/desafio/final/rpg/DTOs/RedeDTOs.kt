@@ -1,4 +1,4 @@
-package desafio.final.rpg.model
+package desafio.final.rpg.DTOs
 
 data class AcaoRedeDTO(
     val idBatalha: Long,
