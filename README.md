@@ -1,6 +1,12 @@
 ### Inara Oenning RA 60010842
 ### João Pedro RA 60012094
 
+## Para teste online ou rode local com as intruções abaixo.
+Front: https://rpg-henna-chi.vercel.app/
+Back: Utilizamos o Render para deixar a API e DB online
+
+- 
+
 # Desafio Final RPG - Kotlin
 
 Backend de um simulador de batalhas RPG, construído com Kotlin, Spring Boot e PostgreSQL. Este projeto gerencia o cadastro dos personagens (CRUD) e processa a lógica e a matemática do sistema de combate.
